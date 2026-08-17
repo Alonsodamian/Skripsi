@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Prediksi Penyerapan Tenaga Kerja Perguruan Tinggi</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{font-family:'Inter',sans-serif;background:#f8fafc}
+.gradient-header{background:linear-gradient(135deg,#1e3a5f 0%,#2c5282 100%)}
+.card-hover{transition:all .3s ease}
+.card-hover:hover{transform:translateY(-4px);box-shadow:0 12px 24px -8px rgba(30,58,95,.25)}
+.section-title{position:relative;padding-left:1rem}
+.section-title::before{content:'';position:absolute;left:0;top:.25rem;bottom:.25rem;width:4px;background:#d69e2e;border-radius:2px}
+.metric-card{background:#fff;border-radius:12px;border:1px solid #e2e8f0}
+.chart-container{position:relative;height:400px;width:100%}
+.sektor-chart-container{position:relative;height:380px;width:100%}
+.animate-fade-in{animation:fadeIn .8s ease-out}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse-glow{0%{box-shadow:0 0 0 0 rgba(229,62,62,0.7)}70%{box-shadow:0 0 0 15px rgba(229,62,62,0)}}
+.table-row:hover{background:#f1f5f9}
+.checkbox-sektor{accent-color:#1e3a5f;width:1.1rem;height:1.1rem;cursor:pointer}
+.sektor-label{cursor:pointer;user-select:none}
+.btn-action{transition:all .2s}
+.btn-action:hover{transform:translateY(-1px)}
+.yoy-positive{color:#16a34a}
+.yoy-negative{color:#dc2626}
+.cagr-badge{display:inline-block;padding:2px 8px;border-radius:9999px;font-size:.7rem;font-weight:600}
+.cagr-high{background:#dcfce7;color:#166534}
+.cagr-mid{background:#fef9c3;color:#854d0e}
+.cagr-low{background:#fee2e2;color:#991b1b}
+</style>
+<base target="_blank">
+<base target="_blank">
+<base target="_blank">
+<base target="_blank">
+</head>
+<body class="text-slate-800">
+
+<header class="gradient-header text-white py-12 px-6">
+<div class="max-w-[1440px] mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+<div>
+<p class="text-amber-400 text-sm font-semibold tracking-wider uppercase mb-2">Deployment</p>
+<h1 class="text-3xl md:text-4xl font-bold leading-tight mb-3">PEMODELAN PREDIKSI PENYERAPAN TENAGA KERJA LULUSAN PERGURUAN TINGGI MENGGUNAKAN METODE LINEAR REGRESSION<br></h1>
+<p class="text-blue-100 text-lg max-w-3xl">Model berbasis Linear Regression menggunakan data Sakernas BPS periode 1986–2025.</p>
+</div>
+<div class="bg-white/10 backdrop-blur-sm rounded-xl p-5 border border-white/20">
+<p class="text-xs text-blue-200 uppercase tracking-wider font-semibold mb-1">Prediksi Tahun 2026</p>
+<p class="text-4xl font-bold text-amber-300">19.426.889</p>
+<p class="text-sm text-blue-100 mt-1">↑ 2,67% dari tahun 2025</p>
+</div>
+</div>
+</div>
+</header>
+
+<main class="max-w-[1440px] mx-auto px-6 py-10 space-y-14">
+
+<section class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm animate-fade-in">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
+<div><span class="text-slate-500">Nama</span><p class="font-semibold text-slate-800">Alonso Damian Sibuea</p></div>
+<div><span class="text-slate-500">NPM</span><p class="font-semibold text-slate-800">10122138</p></div>
+<div><span class="text-slate-500">Program Studi</span><p class="font-semibold text-slate-800">Sistem Informasi</p></div>
+<div><span class="text-slate-500">Pembimbing</span><p class="font-semibold text-slate-800">Dr. Noor Vika Hizviani, ST., MMSI</p></div>
+</div>
+</section>
+
+<section class="animate-fade-in">
+<h2 class="section-title text-2xl font-bold text-slate-800 mb-4">Ringkasan</h2>
+<div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm leading-relaxed text-slate-700">
+<p class="mb-4">Penelitian ini membangun model prediksi jumlah penyerapan tenaga kerja lulusan perguruan tinggi (jenjang Akademi/Diploma dan Universitas) di Indonesia menggunakan algoritma <strong>Linear Regression</strong>. Data bersumber dari publikasi resmi <em>Survei Angkatan Kerja Nasional (Sakernas)</em> Badan Pusat Statistik (BPS) periode <strong>1986–2025</strong>.</p>
+<p class="mb-4">Proses pemodelan mengikuti kerangka kerja <strong>CRISP-DM</strong> dengan skema yang mempertahankan urutan kronologis data deret waktu. Fitur masukan meliputi <em>lag 1–5</em>, <em>rolling mean 3 & 5 tahun</em>, serta <em>trend</em>. Model menghasilkan performa sangat baik dengan <strong>MAPE 2,40%</strong> dan <strong>R² 0,9324</strong> pada data uji (2015–2025).</p>
+<p>Berdasarkan hasil prediksi, jumlah penyerapan tenaga kerja lulusan perguruan tinggi pada tahun <strong>2026</strong> diperkirakan mencapai <strong>19.426.889 orang</strong>, meningkat sebesar <strong>2,67%</strong> dibandingkan tahun 2025.</p>
+</div>
+</section>
+
+<section class="animate-fade-in">
+<h2 class="section-title text-2xl font-bold text-slate-800 mb-4">Kerangka Kerja CRISP-DM</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-3">
+<div class="bg-white rounded-lg p-4 border border-slate-200 text-center card-hover"><div class="w-10 h-10 rounded-full bg-blue-900 text-white flex items-center justify-center font-bold mx-auto mb-2">1</div><h3 class="font-semibold text-sm text-slate-800">Business Understanding</h3><p class="text-xs text-slate-500 mt-1">Identifikasi kebutuhan prediksi ketenagakerjaan</p></div>
+<div class="bg-white rounded-lg p-4 border border-slate-200 text-center card-hover"><div class="w-10 h-10 rounded-full bg-blue-800 text-white flex items-center justify-center font-bold mx-auto mb-2">2</div><h3 class="font-semibold text-sm text-slate-800">Data Understanding</h3><p class="text-xs text-slate-500 mt-1">Eksplorasi 39 tahun data Sakernas BPS</p></div>
+<div class="bg-white rounded-lg p-4 border border-slate-200 text-center card-hover"><div class="w-10 h-10 rounded-full bg-blue-700 text-white flex items-center justify-center font-bold mx-auto mb-2">3</div><h3 class="font-semibold text-sm text-slate-800">Data Preparation</h3><p class="text-xs text-slate-500 mt-1">Agregasi, feature engineering, & splitting</p></div>
+<div class="bg-white rounded-lg p-4 border border-slate-200 text-center card-hover"><div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold mx-auto mb-2">4</div><h3 class="font-semibold text-sm text-slate-800">Modeling</h3><p class="text-xs text-slate-500 mt-1">Linear Regression dengan 8 fitur</p></div>
+<div class="bg-white rounded-lg p-4 border border-slate-200 text-center card-hover"><div class="w-10 h-10 rounded-full bg-amber-600 text-white flex items-center justify-center font-bold mx-auto mb-2">5</div><h3 class="font-semibold text-sm text-slate-800">Evaluation</h3><p class="text-xs text-slate-500 mt-1">MAE, RMSE, MAPE, & R²</p></div>
+<div class="bg-white rounded-lg p-4 border border-slate-200 text-center card-hover"><div class="w-10 h-10 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold mx-auto mb-2">6</div><h3 class="font-semibold text-sm text-slate-800">Deployment</h3><p class="text-xs text-slate-500 mt-1">Dashboard web statis ini</p></div>
+</div>
+</section>
+
+<section class="animate-fade-in">
+<h2 class="section-title text-2xl font-bold text-slate-800 mb-4">Dashboard Penyerapan per Sektor</h2>
+
+<div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm mb-5">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+<div>
+<div class="flex items-center justify-between mb-2">
+<label class="text-sm font-semibold text-slate-700">Pilih Sektor</label>
+<div class="flex gap-2">
+<button onclick="selectAllSectors()" class="btn-action text-xs bg-blue-900 text-white px-3 py-1 rounded-md font-medium hover:bg-blue-800">Pilih Semua</button>
+<button onclick="resetSectors()" class="btn-action text-xs bg-slate-200 text-slate-700 px-3 py-1 rounded-md font-medium hover:bg-slate-300">Reset</button>
+</div>
+</div>
+<div id="sektorCheckboxes" class="max-h-52 overflow-y-auto border border-slate-200 rounded-lg p-3 space-y-2 bg-slate-50"></div>
+</div>
+<div class="lg:col-span-2">
+<label class="text-sm font-semibold text-slate-700 mb-2 block">Rentang Tahun</label>
+<div class="flex items-center gap-3">
+<div class="flex-1">
+<label class="text-xs text-slate-500 mb-1 block">Dari Tahun</label>
+<select id="tahunDari" class="w-full bg-white border border-slate-300 text-slate-800 text-sm rounded-lg p-2.5 font-medium focus:ring-blue-500 focus:border-blue-500"></select>
+</div>
+<div class="text-slate-400 font-bold pt-5">→</div>
+<div class="flex-1">
+<label class="text-xs text-slate-500 mb-1 block">Sampai Tahun</label>
+<select id="tahunSampai" class="w-full bg-white border border-slate-300 text-slate-800 text-sm rounded-lg p-2.5 font-medium focus:ring-blue-500 focus:border-blue-500"></select>
+</div>
+</div>
+<p id="rentangError" class="text-xs text-red-500 mt-2 hidden">⚠ Rentang tahun minimal 2 tahun dan tahun akhir harus lebih besar dari tahun awal.</p>
+</div>
+</div>
+</div>
+
+<div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm mb-5">
+<div class="flex flex-wrap items-center justify-between mb-4 gap-3">
+<div>
+<h3 class="font-semibold text-slate-800">Tren Penyerapan per Lapangan Pekerjaan Utama</h3>
+<p class="text-sm text-slate-500">Data Sakernas BPS — Warna berbeda per sektor</p>
+</div>
+<div id="legendSektor" class="flex flex-wrap gap-2 text-xs"></div>
+</div>
+<div class="sektor-chart-container"><canvas id="chartSektor"></canvas></div>
+</div>
+
+<div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-200 bg-slate-50">
+<h3 class="font-semibold text-slate-800">Tabel Pertumbuhan Year-over-Year (YoY)</h3>
+<p class="text-xs text-slate-500 mt-0.5">Persentase pertumbuhan tahunan per sektor — sinkron dengan filter di atas</p>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-sm text-left">
+<thead class="text-xs text-slate-700 uppercase bg-slate-100 border-b border-slate-200"><tr id="yoyHeader"></tr></thead>
+<tbody id="yoyBody" class="divide-y divide-slate-100"></tbody>
+<tfoot id="yoyFooter" class="bg-slate-50 font-semibold text-xs text-slate-700 border-t-2 border-slate-200"></tfoot>
+</table>
+</div>
+</div>
+</section>
+
+<section class="animate-fade-in">
+<h2 class="section-title text-2xl font-bold text-slate-800 mb-4">Visualisasi Prediksi</h2>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
+<div class="metric-card p-5 card-hover"><p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">MAE</p><p class="text-2xl font-bold text-blue-900 mt-1">385.914</p><p class="text-xs text-slate-500 mt-1">Mean Absolute Error</p></div>
+<div class="metric-card p-5 card-hover"><p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">RMSE</p><p class="text-2xl font-bold text-blue-800 mt-1">427.871</p><p class="text-xs text-slate-500 mt-1">Root Mean Squared Error</p></div>
+<div class="metric-card p-5 card-hover border-amber-200"><p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">MAPE</p><p class="text-2xl font-bold text-amber-600 mt-1">2,40%</p><p class="text-xs text-slate-500 mt-1">Mean Absolute Percentage Error</p></div>
+<div class="metric-card p-5 card-hover"><p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">R²</p><p class="text-2xl font-bold text-emerald-700 mt-1">0,9324</p><p class="text-xs text-slate-500 mt-1">Coefficient of Determination</p></div>
+</div>
+
+<div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+<div class="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
+<div>
+<h3 class="font-semibold text-slate-800">Tren Penyerapan Tenaga Kerja Perguruan Tinggi</h3>
+<p class="text-sm text-slate-500">Periode 1986–2025 & Prediksi 2026</p>
+</div>
+<div class="flex flex-wrap gap-3 text-sm">
+<label class="flex items-center gap-2 cursor-pointer">
+<input type="checkbox" id="chkAktual" class="w-4 h-4 accent-blue-900" checked onchange="updateChartTotal()">
+<span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-900"></span> Aktual</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer">
+<input type="checkbox" id="chkPrediksiTest" class="w-4 h-4 accent-amber-500" checked onchange="updateChartTotal()">
+<span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Prediksi Test</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer">
+<input type="checkbox" id="chkPrediksi2026" class="w-4 h-4 accent-red-500" checked onchange="updateChartTotal()">
+<span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-500"></span> Prediksi 2026</span>
+</label>
+</div>
+</div>
+<div class="chart-container"><canvas id="chartTotal"></canvas></div>
+</div>
+
+
+
+<div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-5">
+<div class="bg-gradient-to-br from-red-50 to-red-100/50 rounded-xl p-6 border-2 border-red-300 shadow-sm">
+<p class="text-sm font-bold text-red-700 uppercase tracking-widest mb-3">📊 Prediksi Tahun 2026</p>
+<p class="text-4xl font-bold text-red-800 mb-2">19.426.889</p>
+<p class="text-base text-red-700 font-semibold">⭐ Orang</p>
+</div>
+<div class="bg-gradient-to-br from-emerald-50 to-emerald-100/50 rounded-xl p-6 border-2 border-emerald-300 shadow-sm">
+<p class="text-sm font-bold text-emerald-700 uppercase tracking-widest mb-3">📈 Pertumbuhan vs 2025</p>
+<p class="text-4xl font-bold text-emerald-800 mb-2">+2,67%</p>
+<p class="text-base text-emerald-700 font-semibold">Selisih: 505.985 orang</p>
+</div>
+<div class="bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-xl p-6 border-2 border-blue-300 shadow-sm">
+<p class="text-sm font-bold text-blue-700 uppercase tracking-widest mb-3">📅 Data Terakhir (2025)</p>
+<p class="text-4xl font-bold text-blue-800 mb-2">18.920.904</p>
+<p class="text-base text-blue-700 font-semibold">Orang</p>
+</div>
+</div>
+</section>
+
+<section class="animate-fade-in">
+<h2 class="section-title text-2xl font-bold text-slate-800 mb-4">Kesimpulan</h2>
+<div class="bg-gradient-to-br from-blue-900 to-blue-800 rounded-xl p-6 text-white shadow-lg">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<h3 class="font-semibold text-amber-300 mb-3">Hasil Model</h3>
+<ul class="space-y-2 text-blue-100 text-sm">
+<li class="flex items-start gap-2"><span class="text-amber-300 mt-0.5">▸</span> Model Linear Regression mampu memprediksi dengan akurasi sangat tinggi (MAPE 2,40%).</li>
+<li class="flex items-start gap-2"><span class="text-amber-300 mt-0.5">▸</span> Nilai R² 0,9324 menunjukkan model menjelaskan 93,24% variabilitas data.</li>
+</ul>
+</div>
+<div>
+<h3 class="font-semibold text-amber-300 mb-3">Rekomendasi</h3>
+<ul class="space-y-2 text-blue-100 text-sm">
+<li class="flex items-start gap-2"><span class="text-amber-300 mt-0.5">▸</span> Prediksi 2026 dapat digunakan sebagai acuan perencanaan kebijakan ketenagakerjaan.</li>
+<li class="flex items-start gap-2"><span class="text-amber-300 mt-0.5">▸</span> Sektor Jasa Kemasyarakatan dan Perdagangan menunjukkan kontribusi terbesar.</li>
+<li class="flex items-start gap-2"><span class="text-amber-300 mt-0.5">▸</span> Perlu pembaruan model secara berkala dengan data Sakernas terbaru.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+
+</main>
+
+<footer class="bg-slate-900 text-slate-400 py-8 px-6 mt-12">
+<div class="max-w-[1440px] mx-auto text-center text-sm">
+<p class="font-semibold text-slate-300">Universitas Gunadarma - Fakultas Ilmu Komputer & Teknologi Informasi</p>
+<p class="mt-1">Program Studi Sistem Informasi | Skripsi 2026</p>
+</div>
+</footer>
+
+<script>
+
+const dataTotal = [{"tahun": 1986, "aktual": 879336}, {"tahun": 1987, "aktual": 1162086}, {"tahun": 1988, "aktual": 1085140}, {"tahun": 1989, "aktual": 1235347}, {"tahun": 1990, "aktual": 1374515}, {"tahun": 1991, "aktual": 1539477}, {"tahun": 1992, "aktual": 1671274}, {"tahun": 1993, "aktual": 1912098}, {"tahun": 1994, "aktual": 2208690}, {"tahun": 1996, "aktual": 2959696}, {"tahun": 1997, "aktual": 3253781}, {"tahun": 1998, "aktual": 3474551}, {"tahun": 1999, "aktual": 3818464}, {"tahun": 2000, "aktual": 3977922}, {"tahun": 2001, "aktual": 4366410}, {"tahun": 2002, "aktual": 4380935}, {"tahun": 2003, "aktual": 4191857}, {"tahun": 2004, "aktual": 4892413}, {"tahun": 2005, "aktual": 5172258}, {"tahun": 2006, "aktual": 5607742}, {"tahun": 2007, "aktual": 6052128}, {"tahun": 2008, "aktual": 6728028}, {"tahun": 2009, "aktual": 7171048}, {"tahun": 2010, "aktual": 8047138}, {"tahun": 2011, "aktual": 8714336}, {"tahun": 2012, "aktual": 10290214}, {"tahun": 2013, "aktual": 10922046}, {"tahun": 2014, "aktual": 11599058}, {"tahun": 2015, "aktual": 12902135}, {"tahun": 2016, "aktual": 14094902}, {"tahun": 2017, "aktual": 14940604}, {"tahun": 2018, "aktual": 15393270}, {"tahun": 2019, "aktual": 16235149}, {"tahun": 2020, "aktual": 16603876}, {"tahun": 2021, "aktual": 16868416}, {"tahun": 2022, "aktual": 16879018}, {"tahun": 2023, "aktual": 16903404}, {"tahun": 2024, "aktual": 18011795}, {"tahun": 2025, "aktual": 18920904}];
+const dataPrediksiTest = [{"tahun": 2015, "aktual": 12902135, "prediksi": 12352497}, {"tahun": 2016, "aktual": 14094902, "prediksi": 13713758}, {"tahun": 2017, "aktual": 14940604, "prediksi": 14888097}, {"tahun": 2018, "aktual": 15393270, "prediksi": 15739208}, {"tahun": 2019, "aktual": 16235149, "prediksi": 16188161}, {"tahun": 2020, "aktual": 16603876, "prediksi": 16919969}, {"tahun": 2021, "aktual": 16868416, "prediksi": 17293020}, {"tahun": 2022, "aktual": 16879018, "prediksi": 17454965}, {"tahun": 2023, "aktual": 16903404, "prediksi": 17486086}, {"tahun": 2024, "aktual": 18011795, "prediksi": 17426089}, {"tahun": 2025, "aktual": 18920904, "prediksi": 18537096}];
+const prediksi2026 = 19426889;
+const dataSektor = [{"nama": "1. Pertanian, Kehutanan, Perburuan dan Perikanan", "color": "#1e3a5f", "data": [{"tahun": 1986, "nilai": 26477}, {"tahun": 1987, "nilai": 32532}, {"tahun": 1988, "nilai": 35613}, {"tahun": 1989, "nilai": 46792}, {"tahun": 1990, "nilai": 54736}, {"tahun": 1991, "nilai": 76567}, {"tahun": 1992, "nilai": 78285}, {"tahun": 1993, "nilai": 88136}, {"tahun": 1994, "nilai": 69865}, {"tahun": 1996, "nilai": 92792}, {"tahun": 1997, "nilai": 92397}, {"tahun": 1998, "nilai": 115436}, {"tahun": 1999, "nilai": 109776}, {"tahun": 2000, "nilai": 115963}, {"tahun": 2001, "nilai": 119942}, {"tahun": 2002, "nilai": 119181}, {"tahun": 2003, "nilai": 99234}, {"tahun": 2004, "nilai": 110416}, {"tahun": 2005, "nilai": 145164}, {"tahun": 2006, "nilai": 135743}, {"tahun": 2007, "nilai": 379762}, {"tahun": 2008, "nilai": 346392}, {"tahun": 2009, "nilai": 234380}, {"tahun": 2010, "nilai": 240286}, {"tahun": 2011, "nilai": 245952}, {"tahun": 2012, "nilai": 324184}, {"tahun": 2013, "nilai": 353035}, {"tahun": 2014, "nilai": 354329}, {"tahun": 2015, "nilai": 416876}, {"tahun": 2016, "nilai": 463943}, {"tahun": 2017, "nilai": 497377}, {"tahun": 2018, "nilai": 547599}, {"tahun": 2019, "nilai": 639436}, {"tahun": 2020, "nilai": 695137}, {"tahun": 2021, "nilai": 685144}, {"tahun": 2022, "nilai": 594988}, {"tahun": 2023, "nilai": 526154}, {"tahun": 2024, "nilai": 698788}, {"tahun": 2025, "nilai": 895328}]}, {"nama": "2. Pertambangan dan Penggalian", "color": "#d69e2e", "data": [{"tahun": 1989, "nilai": 11771}, {"tahun": 1990, "nilai": 10921}, {"tahun": 1991, "nilai": 19784}, {"tahun": 1992, "nilai": 17682}, {"tahun": 1993, "nilai": 19266}, {"tahun": 1994, "nilai": 28786}, {"tahun": 1996, "nilai": 20403}, {"tahun": 1997, "nilai": 24710}, {"tahun": 1998, "nilai": 26226}, {"tahun": 1999, "nilai": 20557}, {"tahun": 2000, "nilai": 7756}, {"tahun": 2001, "nilai": 31463}, {"tahun": 2002, "nilai": 30004}, {"tahun": 2003, "nilai": 18733}, {"tahun": 2004, "nilai": 32576}, {"tahun": 2005, "nilai": 40241}, {"tahun": 2006, "nilai": 41240}, {"tahun": 2007, "nilai": 44922}, {"tahun": 2008, "nilai": 50243}, {"tahun": 2009, "nilai": 54141}, {"tahun": 2010, "nilai": 56367}, {"tahun": 2011, "nilai": 76720}, {"tahun": 2012, "nilai": 109386}, {"tahun": 2013, "nilai": 95411}, {"tahun": 2014, "nilai": 88468}, {"tahun": 2015, "nilai": 104378}, {"tahun": 2016, "nilai": 118508}, {"tahun": 2017, "nilai": 101081}, {"tahun": 2018, "nilai": 115475}, {"tahun": 2019, "nilai": 118166}, {"tahun": 2020, "nilai": 121388}, {"tahun": 2021, "nilai": 103608}, {"tahun": 2022, "nilai": 143523}, {"tahun": 2023, "nilai": 135607}, {"tahun": 2024, "nilai": 135794}, {"tahun": 2025, "nilai": 126856}]}, {"nama": "3. Industri Pengolahan", "color": "#e53e3e", "data": [{"tahun": 1986, "nilai": 45089}, {"tahun": 1987, "nilai": 88312}, {"tahun": 1988, "nilai": 69520}, {"tahun": 1989, "nilai": 75202}, {"tahun": 1990, "nilai": 107221}, {"tahun": 1991, "nilai": 123334}, {"tahun": 1992, "nilai": 129827}, {"tahun": 1993, "nilai": 149235}, {"tahun": 1994, "nilai": 228329}, {"tahun": 1996, "nilai": 255605}, {"tahun": 1997, "nilai": 241191}, {"tahun": 1998, "nilai": 267103}, {"tahun": 1999, "nilai": 316856}, {"tahun": 2000, "nilai": 442457}, {"tahun": 2001, "nilai": 429329}, {"tahun": 2002, "nilai": 410860}, {"tahun": 2003, "nilai": 401122}, {"tahun": 2004, "nilai": 421255}, {"tahun": 2005, "nilai": 455748}, {"tahun": 2006, "nilai": 416427}, {"tahun": 2007, "nilai": 452316}, {"tahun": 2008, "nilai": 526099}, {"tahun": 2009, "nilai": 554620}, {"tahun": 2010, "nilai": 548235}, {"tahun": 2011, "nilai": 518534}, {"tahun": 2012, "nilai": 683678}, {"tahun": 2013, "nilai": 692548}, {"tahun": 2014, "nilai": 770426}, {"tahun": 2015, "nilai": 888494}, {"tahun": 2016, "nilai": 872786}, {"tahun": 2017, "nilai": 975149}, {"tahun": 2018, "nilai": 1034638}, {"tahun": 2019, "nilai": 1102610}, {"tahun": 2020, "nilai": 1111536}, {"tahun": 2021, "nilai": 1146224}, {"tahun": 2022, "nilai": 1291904}, {"tahun": 2023, "nilai": 1216288}, {"tahun": 2024, "nilai": 1165700}, {"tahun": 2025, "nilai": 1319884}]}, {"nama": "4. Listrik, Gas dan Air", "color": "#38a169", "data": [{"tahun": 1989, "nilai": 7940}, {"tahun": 1990, "nilai": 11319}, {"tahun": 1991, "nilai": 8465}, {"tahun": 1992, "nilai": 15443}, {"tahun": 1993, "nilai": 8677}, {"tahun": 1994, "nilai": 11061}, {"tahun": 1996, "nilai": 12609}, {"tahun": 1997, "nilai": 19901}, {"tahun": 1998, "nilai": 11208}, {"tahun": 1999, "nilai": 25196}, {"tahun": 2000, "nilai": 2674}, {"tahun": 2001, "nilai": 24009}, {"tahun": 2002, "nilai": 21138}, {"tahun": 2003, "nilai": 14495}, {"tahun": 2004, "nilai": 27853}, {"tahun": 2005, "nilai": 22945}, {"tahun": 2006, "nilai": 25687}, {"tahun": 2007, "nilai": 28806}, {"tahun": 2008, "nilai": 29405}, {"tahun": 2009, "nilai": 34464}, {"tahun": 2010, "nilai": 29684}, {"tahun": 2011, "nilai": 43614}, {"tahun": 2012, "nilai": 45762}, {"tahun": 2013, "nilai": 53917}, {"tahun": 2014, "nilai": 40880}, {"tahun": 2015, "nilai": 54838}, {"tahun": 2016, "nilai": 80780}, {"tahun": 2017, "nilai": 80734}, {"tahun": 2018, "nilai": 79556}, {"tahun": 2019, "nilai": 105872}, {"tahun": 2020, "nilai": 98043}, {"tahun": 2021, "nilai": 117686}, {"tahun": 2022, "nilai": 125012}, {"tahun": 2023, "nilai": 108063}, {"tahun": 2024, "nilai": 107105}, {"tahun": 2025, "nilai": 129848}]}, {"nama": "5. Konstruksi", "color": "#805ad5", "data": [{"tahun": 1989, "nilai": 42816}, {"tahun": 1990, "nilai": 39545}, {"tahun": 1991, "nilai": 57391}, {"tahun": 1992, "nilai": 61014}, {"tahun": 1993, "nilai": 79248}, {"tahun": 1994, "nilai": 91634}, {"tahun": 1996, "nilai": 104839}, {"tahun": 1997, "nilai": 123682}, {"tahun": 1998, "nilai": 112979}, {"tahun": 1999, "nilai": 91461}, {"tahun": 2000, "nilai": 128749}, {"tahun": 2001, "nilai": 116573}, {"tahun": 2002, "nilai": 115410}, {"tahun": 2003, "nilai": 118061}, {"tahun": 2004, "nilai": 149386}, {"tahun": 2005, "nilai": 146950}, {"tahun": 2006, "nilai": 159158}, {"tahun": 2007, "nilai": 180506}, {"tahun": 2008, "nilai": 211102}, {"tahun": 2009, "nilai": 202600}, {"tahun": 2010, "nilai": 206985}, {"tahun": 2011, "nilai": 228514}, {"tahun": 2012, "nilai": 262970}, {"tahun": 2013, "nilai": 275586}, {"tahun": 2014, "nilai": 297466}, {"tahun": 2015, "nilai": 361732}, {"tahun": 2016, "nilai": 361142}, {"tahun": 2017, "nilai": 339912}, {"tahun": 2018, "nilai": 341122}, {"tahun": 2019, "nilai": 364825}, {"tahun": 2020, "nilai": 385596}, {"tahun": 2021, "nilai": 383672}, {"tahun": 2022, "nilai": 454252}, {"tahun": 2023, "nilai": 396460}, {"tahun": 2024, "nilai": 403298}, {"tahun": 2025, "nilai": 368709}]}, {"nama": "6. Perdagangan Besar, Eceran, Rumah Makan dan Hotel", "color": "#dd6b20", "data": [{"tahun": 1986, "nilai": 50652}, {"tahun": 1987, "nilai": 87792}, {"tahun": 1988, "nilai": 82182}, {"tahun": 1989, "nilai": 86205}, {"tahun": 1990, "nilai": 115979}, {"tahun": 1991, "nilai": 128358}, {"tahun": 1992, "nilai": 137404}, {"tahun": 1993, "nilai": 184063}, {"tahun": 1994, "nilai": 215957}, {"tahun": 1996, "nilai": 344294}, {"tahun": 1997, "nilai": 385103}, {"tahun": 1998, "nilai": 420628}, {"tahun": 1999, "nilai": 490476}, {"tahun": 2000, "nilai": 594189}, {"tahun": 2001, "nilai": 575951}, {"tahun": 2002, "nilai": 615874}, {"tahun": 2003, "nilai": 574686}, {"tahun": 2004, "nilai": 691370}, {"tahun": 2005, "nilai": 741208}, {"tahun": 2006, "nilai": 836324}, {"tahun": 2007, "nilai": 818985}, {"tahun": 2008, "nilai": 1027581}, {"tahun": 2009, "nilai": 1102218}, {"tahun": 2010, "nilai": 1126938}, {"tahun": 2011, "nilai": 1101400}, {"tahun": 2012, "nilai": 1371222}, {"tahun": 2013, "nilai": 1444274}, {"tahun": 2014, "nilai": 1566338}, {"tahun": 2015, "nilai": 1836085}, {"tahun": 2016, "nilai": 2120732}, {"tahun": 2017, "nilai": 2249004}, {"tahun": 2018, "nilai": 2351936}, {"tahun": 2019, "nilai": 2546503}, {"tahun": 2020, "nilai": 2703203}, {"tahun": 2021, "nilai": 2954339}, {"tahun": 2022, "nilai": 3030314}, {"tahun": 2023, "nilai": 2943408}, {"tahun": 2024, "nilai": 3059304}, {"tahun": 2025, "nilai": 3277745}]}, {"nama": "7. Angkutan, Pergudangan dan Komunikasi", "color": "#319795", "data": [{"tahun": 1989, "nilai": 20607}, {"tahun": 1990, "nilai": 34330}, {"tahun": 1991, "nilai": 37801}, {"tahun": 1992, "nilai": 38938}, {"tahun": 1993, "nilai": 56549}, {"tahun": 1994, "nilai": 64706}, {"tahun": 1996, "nilai": 87323}, {"tahun": 1997, "nilai": 69975}, {"tahun": 1998, "nilai": 99792}, {"tahun": 1999, "nilai": 101229}, {"tahun": 2000, "nilai": 150902}, {"tahun": 2001, "nilai": 145919}, {"tahun": 2002, "nilai": 144991}, {"tahun": 2003, "nilai": 138832}, {"tahun": 2004, "nilai": 168036}, {"tahun": 2005, "nilai": 160271}, {"tahun": 2006, "nilai": 213317}, {"tahun": 2007, "nilai": 286250}, {"tahun": 2008, "nilai": 388865}, {"tahun": 2009, "nilai": 378130}, {"tahun": 2010, "nilai": 364362}, {"tahun": 2011, "nilai": 401208}, {"tahun": 2012, "nilai": 368506}, {"tahun": 2013, "nilai": 422447}, {"tahun": 2014, "nilai": 394516}, {"tahun": 2015, "nilai": 507380}, {"tahun": 2016, "nilai": 478569}, {"tahun": 2017, "nilai": 536461}, {"tahun": 2018, "nilai": 729061}, {"tahun": 2019, "nilai": 785638}, {"tahun": 2020, "nilai": 821681}, {"tahun": 2021, "nilai": 875860}, {"tahun": 2022, "nilai": 867684}, {"tahun": 2023, "nilai": 899145}, {"tahun": 2024, "nilai": 990148}, {"tahun": 2025, "nilai": 889005}]}, {"nama": "8. Keuangan, Asuransi, Usaha Persewaan Bangunan, Tanah, dan Jasa Perusahaan", "color": "#d53f8c", "data": [{"tahun": 1989, "nilai": 65225}, {"tahun": 1990, "nilai": 104659}, {"tahun": 1991, "nilai": 108175}, {"tahun": 1992, "nilai": 109290}, {"tahun": 1993, "nilai": 130564}, {"tahun": 1994, "nilai": 134772}, {"tahun": 1996, "nilai": 227912}, {"tahun": 1997, "nilai": 198466}, {"tahun": 1998, "nilai": 211503}, {"tahun": 1999, "nilai": 193657}, {"tahun": 2000, "nilai": 313016}, {"tahun": 2001, "nilai": 370479}, {"tahun": 2002, "nilai": 335997}, {"tahun": 2003, "nilai": 356915}, {"tahun": 2004, "nilai": 348745}, {"tahun": 2005, "nilai": 406082}, {"tahun": 2006, "nilai": 488768}, {"tahun": 2007, "nilai": 473836}, {"tahun": 2008, "nilai": 537074}, {"tahun": 2009, "nilai": 572631}, {"tahun": 2010, "nilai": 596436}, {"tahun": 2011, "nilai": 723708}, {"tahun": 2012, "nilai": 1060332}, {"tahun": 2013, "nilai": 1122838}, {"tahun": 2014, "nilai": 1213297}, {"tahun": 2015, "nilai": 1398836}, {"tahun": 2016, "nilai": 1547124}, {"tahun": 2017, "nilai": 1499262}, {"tahun": 2018, "nilai": 1454988}, {"tahun": 2019, "nilai": 1503325}, {"tahun": 2020, "nilai": 1482848}, {"tahun": 2021, "nilai": 1477546}, {"tahun": 2022, "nilai": 1490039}, {"tahun": 2023, "nilai": 1543577}, {"tahun": 2024, "nilai": 1610528}, {"tahun": 2025, "nilai": 1618924}]}, {"nama": "9. Jasa Kemasyarakatan, Sosial dan Perorangan", "color": "#718096", "data": [{"tahun": 1986, "nilai": 568382}, {"tahun": 1987, "nilai": 772718}, {"tahun": 1988, "nilai": 737601}, {"tahun": 1989, "nilai": 878551}, {"tahun": 1990, "nilai": 893930}, {"tahun": 1991, "nilai": 977755}, {"tahun": 1992, "nilai": 1082192}, {"tahun": 1993, "nilai": 1194739}, {"tahun": 1994, "nilai": 1363519}, {"tahun": 1996, "nilai": 1813919}, {"tahun": 1997, "nilai": 2098356}, {"tahun": 1998, "nilai": 2209676}, {"tahun": 1999, "nilai": 2469256}, {"tahun": 2000, "nilai": 2222216}, {"tahun": 2001, "nilai": 2552745}, {"tahun": 2002, "nilai": 2587480}, {"tahun": 2003, "nilai": 2469779}, {"tahun": 2004, "nilai": 2942776}, {"tahun": 2005, "nilai": 3053650}, {"tahun": 2006, "nilai": 3291078}, {"tahun": 2007, "nilai": 3386746}, {"tahun": 2008, "nilai": 3611266}, {"tahun": 2009, "nilai": 4037865}, {"tahun": 2010, "nilai": 4877845}, {"tahun": 2011, "nilai": 5374685}, {"tahun": 2012, "nilai": 6064175}, {"tahun": 2013, "nilai": 6461992}, {"tahun": 2014, "nilai": 6873339}, {"tahun": 2015, "nilai": 7333515}, {"tahun": 2016, "nilai": 8051319}, {"tahun": 2017, "nilai": 8661624}, {"tahun": 2018, "nilai": 8738893}, {"tahun": 2019, "nilai": 9068771}, {"tahun": 2020, "nilai": 9184444}, {"tahun": 2021, "nilai": 9124335}, {"tahun": 2022, "nilai": 8881300}, {"tahun": 2023, "nilai": 9134700}, {"tahun": 2024, "nilai": 9841130}, {"tahun": 2025, "nilai": 10294606}]}];
+const defaultSektorNames = dataSektor.map(s => s.nama);
+const allTahun = [...new Set(dataSektor.flatMap(s => s.data.map(d => d.tahun)))].sort((a,b)=>a-b);
+
+const fmt = (n) => new Intl.NumberFormat('id-ID').format(n);
+const fmtPct = (n) => n.toFixed(2).replace('.',',')+'%';
+const fmtShort = (n) => n>=1e6 ? (n/1e6).toFixed(1).replace('.',',')+' Jt' : n>=1e3 ? (n/1e3).toFixed(0).replace('.',',')+' Rb' : fmt(n);
+
+let selectedSektors = [...defaultSektorNames];
+let chartSektorInstance = null;
+
+// Init checkboxes
+const cbContainer = document.getElementById('sektorCheckboxes');
+dataSektor.forEach((s,i)=>{
+    const div=document.createElement('div');div.className='flex items-center gap-2';
+    const checked=defaultSektorNames.includes(s.nama)?'checked':'';
+    div.innerHTML=`<input type="checkbox" id="cb-${i}" value="${s.nama}" ${checked} class="checkbox-sektor" onchange="onSektorChange()">
+    <label for="cb-${i}" class="sektor-label text-sm text-slate-700 flex items-center gap-2">
+    <span class="w-3 h-3 rounded-full inline-block" style="background:${s.color}"></span>${s.nama}</label>`;
+    cbContainer.appendChild(div);
+});
+
+function selectAllSectors(){document.querySelectorAll('.checkbox-sektor').forEach(cb=>cb.checked=true);onSektorChange();}
+function resetSectors(){document.querySelectorAll('.checkbox-sektor').forEach(cb=>cb.checked=false);onSektorChange();}
+
+// Init tahun dropdowns
+const dariSelect=document.getElementById('tahunDari');
+const sampaiSelect=document.getElementById('tahunSampai');
+allTahun.forEach(t=>{
+    dariSelect.innerHTML+=`<option value="${t}" ${t===1986?'selected':''}>${t}</option>`;
+    sampaiSelect.innerHTML+=`<option value="${t}" ${t===2025?'selected':''}>${t}</option>`;
+});
+dariSelect.addEventListener('change',validateAndRender);
+sampaiSelect.addEventListener('change',validateAndRender);
+
+function validateAndRender(){
+    const dari=parseInt(dariSelect.value);
+    const sampai=parseInt(sampaiSelect.value);
+    const errorEl=document.getElementById('rentangError');
+    if(sampai<=dari||(sampai-dari)<1){errorEl.classList.remove('hidden');return;}
+    errorEl.classList.add('hidden');
+    renderSektorDashboard();
+}
+function onSektorChange(){
+    selectedSektors=Array.from(document.querySelectorAll('.checkbox-sektor:checked')).map(cb=>cb.value);
+    renderSektorDashboard();
+}
+
+function renderSektorDashboard(){
+    const dari=parseInt(dariSelect.value);
+    const sampai=parseInt(sampaiSelect.value);
+    const filteredSektor=dataSektor.filter(s=>selectedSektors.includes(s.nama));
+
+    const legendEl=document.getElementById('legendSektor');
+    legendEl.innerHTML=filteredSektor.map(s=>`<span class="flex items-center gap-1 px-2 py-1 bg-slate-100 rounded-md"><span class="w-2.5 h-2.5 rounded-full" style="background:${s.color}"></span>${s.nama.split('.')[0]}</span>`).join('');
+
+    const tahunRange=allTahun.filter(t=>t>=dari&&t<=sampai);
+    const datasets=filteredSektor.map(s=>({
+        label:s.nama,
+        data:tahunRange.map(t=>{const d=s.data.find(x=>x.tahun===t);return d?d.nilai:null;}),
+        borderColor:s.color,backgroundColor:s.color+'15',borderWidth:2.5,pointRadius:3,pointBackgroundColor:s.color,fill:false,tension:0.3,spanGaps:true
+    }));
+
+    if(chartSektorInstance)chartSektorInstance.destroy();
+    chartSektorInstance=new Chart(document.getElementById('chartSektor'),{
+        type:'line',
+        data:{labels:tahunRange,datasets},
+        options:{
+            responsive:true,maintainAspectRatio:false,
+            interaction:{mode:'index',intersect:false},
+            plugins:{legend:{display:false},tooltip:{callbacks:{label:(c)=>c.dataset.label.split('.')[0]+': '+fmt(Math.round(c.raw))+' orang'}}},
+            scales:{y:{beginAtZero:true,ticks:{callback:(v)=>fmtShort(v)},grid:{color:'#f1f5f9'}},x:{grid:{display:false}}}
+        }
+    });
+
+    // YoY Table
+    const thead=document.getElementById('yoyHeader');
+    const tbody=document.getElementById('yoyBody');
+    const tfoot=document.getElementById('yoyFooter');
+
+    let headerHTML='<th class="px-4 py-3 font-semibold bg-slate-100 sticky left-0 z-10">Sektor</th>';
+    for(let t=dari+1;t<=sampai;t++)headerHTML+=`<th class="px-3 py-3 text-center font-semibold">${t}<br><span class="text-[10px] font-normal text-slate-500">YoY %</span></th>`;
+    headerHTML+='<th class="px-4 py-3 text-center font-semibold bg-amber-50">CAGR</th>';
+    thead.innerHTML=headerHTML;
+
+    tbody.innerHTML='';
+    filteredSektor.forEach(s=>{
+        let rowHTML=`<td class="px-4 py-3 font-medium text-slate-800 sticky left-0 bg-white z-10 border-r border-slate-100">
+        <span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full inline-block" style="background:${s.color}"></span>
+        <span class="truncate max-w-[200px]" title="${s.nama}">${s.nama}</span></span></td>`;
+        let cagrStart=null,cagrEnd=null;
+        for(let t=dari+1;t<=sampai;t++){
+            const curr=s.data.find(d=>d.tahun===t);
+            const prev=s.data.find(d=>d.tahun===t-1);
+            if(curr&&prev&&prev.nilai>0){
+                const yoy=((curr.nilai-prev.nilai)/prev.nilai)*100;
+                const cls=yoy>=0?'yoy-positive':'yoy-negative';
+                const sign=yoy>=0?'+':'';
+                rowHTML+=`<td class="px-3 py-3 text-center font-mono text-xs ${cls}">${sign}${fmtPct(yoy)}</td>`;
+                if(cagrStart===null)cagrStart=prev.nilai;
+                cagrEnd=curr.nilai;
+            }else{rowHTML+=`<td class="px-3 py-3 text-center text-slate-300">—</td>`;}
+        }
+        let cagrHTML='<td class="px-4 py-3 text-center">—</td>';
+        if(cagrStart!==null&&cagrEnd!==null&&cagrStart>0&&(sampai-dari)>0){
+            const years=sampai-dari;
+            const cagr=(Math.pow(cagrEnd/cagrStart,1/years)-1)*100;
+            const cagrCls=cagr>=5?'cagr-high':cagr>=0?'cagr-mid':'cagr-low';
+            const sign=cagr>=0?'+':'';
+            cagrHTML=`<td class="px-4 py-3 text-center"><span class="cagr-badge ${cagrCls}">${sign}${fmtPct(cagr)}</span></td>`;
+        }
+        rowHTML+=cagrHTML;
+        const tr=document.createElement('tr');tr.className='table-row border-b border-slate-50 transition-colors';tr.innerHTML=rowHTML;
+        tbody.appendChild(tr);
+    });
+
+    let footHTML='<td class="px-4 py-3 font-semibold sticky left-0 bg-slate-50 z-10 border-r border-slate-200">Rata-rata</td>';
+    for(let t=dari+1;t<=sampai;t++){
+        let sum=0,count=0;
+        filteredSektor.forEach(s=>{
+            const curr=s.data.find(d=>d.tahun===t);
+            const prev=s.data.find(d=>d.tahun===t-1);
+            if(curr&&prev&&prev.nilai>0){sum+=((curr.nilai-prev.nilai)/prev.nilai)*100;count++;}
+        });
+        if(count>0){const avg=sum/count;const cls=avg>=0?'yoy-positive':'yoy-negative';const sign=avg>=0?'+':'';footHTML+=`<td class="px-3 py-3 text-center font-mono ${cls}">${sign}${fmtPct(avg)}</td>`;}
+        else{footHTML+=`<td class="px-3 py-3 text-center text-slate-400">—</td>`;}
+    }
+    footHTML+='<td class="px-4 py-3 text-center text-slate-400">—</td>';
+    tfoot.innerHTML=footHTML;
+}
+
+// ===== CHART TOTAL =====
+const ctxTotal=document.getElementById('chartTotal').getContext('2d');
+const tahunList=dataTotal.map(d=>d.tahun);
+const aktualList=dataTotal.map(d=>d.aktual);
+const prediksiTestMap={};
+dataPrediksiTest.forEach(d=>prediksiTestMap[d.tahun]=d.prediksi);
+const prediksiTestList=tahunList.map(t=>prediksiTestMap[t]??null);
+const tahunExt=[...tahunList,2026];
+const aktualExt=[...aktualList,null];
+const prediksiExt=[...prediksiTestList,prediksi2026];
+
+let chartTotalInstance=null;
+
+const drawStarPlugin={
+    id:'drawStar2026',
+    afterDatasetsDraw(chart){
+        const ctx=chart.ctx;
+        const datasets=chart.data.datasets;
+        const datasetIndex=datasets.findIndex(d=>d.label==='Prediksi 2026');
+        
+        if(datasetIndex>=0){
+            const meta=chart.getDatasetMeta(datasetIndex);
+            const data=meta.data;
+            const lastPoint=data[data.length-1];
+            
+            if(lastPoint&&lastPoint.x!==undefined&&lastPoint.y!==undefined){
+                ctx.save();
+                
+                // Cari titik aktual terakhir
+                const aktualDatasetIndex=datasets.findIndex(d=>d.label==='Aktual (1986–2025)');
+                if(aktualDatasetIndex>=0){
+                    const aktualMeta=chart.getDatasetMeta(aktualDatasetIndex);
+                    const aktualData=aktualMeta.data;
+                    const lastAktualPoint=aktualData[aktualData.length-2]; // -2 karena yang terakhir null (2026)
+                    
+                    if(lastAktualPoint&&lastAktualPoint.x!==undefined&&lastAktualPoint.y!==undefined){
+                        // Gambar garis putus dari titik aktual ke bintang
+                        ctx.beginPath();
+                        ctx.setLineDash([6,4]);
+                        ctx.strokeStyle='rgba(229,62,62,0.6)';
+                        ctx.lineWidth=2;
+                        ctx.moveTo(lastAktualPoint.x,lastAktualPoint.y);
+                        ctx.lineTo(lastPoint.x,lastPoint.y);
+                        ctx.stroke();
+                        ctx.setLineDash([]);
+                    }
+                }
+                
+                // Gambar bintang 5
+                ctx.fillStyle='#e53e3e';
+                ctx.strokeStyle='#fff';
+                ctx.lineWidth=2.5;
+                
+                const size=10;
+                const x=lastPoint.x;
+                const y=lastPoint.y;
+                
+                ctx.beginPath();
+                for(let i=0;i<5;i++){
+                    const angle=Math.PI/2+i*Math.PI*2/5;
+                    const px=x+Math.cos(angle)*size;
+                    const py=y-Math.sin(angle)*size;
+                    if(i===0)ctx.moveTo(px,py);
+                    else ctx.lineTo(px,py);
+                    
+                    const angle2=Math.PI/2+(i+0.5)*Math.PI*2/5;
+                    const px2=x+Math.cos(angle2)*size*0.4;
+                    const py2=y-Math.sin(angle2)*size*0.4;
+                    ctx.lineTo(px2,py2);
+                }
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+                
+                // Label 2026 dengan background box
+                const labelText='2026';
+                ctx.font='bold 12px Inter,sans-serif';
+                const textMetrics=ctx.measureText(labelText);
+                const textWidth=textMetrics.width;
+                const padding=6;
+                const boxY=y+25;
+                const boxX=x-textWidth/2;
+                
+                // Background box
+                ctx.fillStyle='#e53e3e';
+                ctx.fillRect(boxX-padding,boxY-10,textWidth+padding*2,18);
+                
+                // Text
+                ctx.fillStyle='#fff';
+                ctx.textAlign='center';
+                ctx.textBaseline='middle';
+                ctx.fillText(labelText,x,boxY-1);
+                
+                // Nilai prediksi di bawah
+                const nilaiText=fmt(prediksi2026);
+                ctx.font='bold 11px Inter,sans-serif';
+                ctx.fillStyle='#e53e3e';
+                ctx.textAlign='center';
+                ctx.fillText(nilaiText,x,boxY+18);
+                
+                ctx.restore();
+            }
+        }
+    }
+};
+
+function updateChartTotal(){
+    const showAktual=document.getElementById('chkAktual').checked;
+    const showPrediksiTest=document.getElementById('chkPrediksiTest').checked;
+    const showPrediksi2026=document.getElementById('chkPrediksi2026').checked;
+    
+    const datasets=[];
+    if(showAktual)datasets.push({label:'Aktual (1986–2025)',data:aktualExt,borderColor:'#1e3a5f',backgroundColor:'rgba(30,58,95,0.04)',borderWidth:2.5,pointRadius:3,pointBackgroundColor:'#1e3a5f',fill:true,tension:0.3});
+    if(showPrediksiTest)datasets.push({label:'Prediksi Test (2015–2025)',data:tahunExt.map((t,i)=>(t>=2015&&t<=2025)?prediksiExt[i]:null),borderColor:'#d69e2e',backgroundColor:'rgba(214,158,46,0.08)',borderWidth:2.5,borderDash:[6,4],pointRadius:4,pointBackgroundColor:'#d69e2e',fill:true,tension:0.3});
+    if(showPrediksi2026)datasets.push({label:'Prediksi 2026',data:tahunExt.map((t,i)=>t===2026?prediksi2026:null),borderColor:'#e53e3e',backgroundColor:'transparent',borderWidth:0,pointRadius:0});
+    
+    if(chartTotalInstance)chartTotalInstance.destroy();
+    chartTotalInstance=new Chart(ctxTotal,{
+        type:'line',
+        data:{labels:tahunExt,datasets},
+        options:{
+            responsive:true,maintainAspectRatio:false,
+            layout:{padding:{right:150,top:25}},
+            interaction:{mode:'index',intersect:false},
+            plugins:{
+                legend:{display:false},
+                tooltip:{callbacks:{label:(c)=>{if(c.raw===null)return'';return c.dataset.label+': '+fmt(Math.round(c.raw))+' orang';}}}
+            },
+            scales:{
+                y:{beginAtZero:true,ticks:{callback:(v)=>fmtShort(v)},grid:{color:'#f1f5f9'}},
+                x:{grid:{display:false},ticks:{maxRotation:45,minRotation:45}}
+            }
+        },
+        plugins:[drawStarPlugin]
+    });
+}
+
+updateChartTotal();
+
+
+
+renderSektorDashboard();
+</script>
+</body>
+</html>
